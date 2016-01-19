@@ -1,6 +1,6 @@
 import { SEARCH_QUERY, SEARCH_REQUEST, SEARCH_RESPONSE_SUCCESS,
   SEARCH_RESPONSE_FAILURE, PLAY_LIST, PAUSE, REPLACE_TRACKS,
-  PLAY, ADD_SOUND, UPDATE_TIME, VOLUME, ACTIVE_TRACK } from '../actions/player.js';
+  PLAY, PLAYING, ADD_SOUND, UPDATE_TIME, VOLUME, SEEK } from '../actions/player.js';
 
 const initialState = {
   query: '',
@@ -16,7 +16,8 @@ const initialState = {
 };
 
 const rootReducer = (state = initialState, action) => {
-  console.log('ROOT_REDUCER', action.type);
+  if (!action.type.startsWith('EFFECT_'))
+    console.log('ROOT_REDUCER', action.type);
 
   switch (action.type) {
     case SEARCH_QUERY:
@@ -52,13 +53,13 @@ const rootReducer = (state = initialState, action) => {
         isPlaying: false,
       };
 
-    case ACTIVE_TRACK:
+    case PLAY:
       return {
         ...state,
-        activeTrackId: action.trackId
+        activeTrackId: action.trackId,
       };
 
-    case PLAY:
+    case PLAYING:
       return {
         ...state,
         isPlaying: true,
@@ -83,6 +84,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         elapsedTime: action.elapsedTime
+      };
+
+    case SEEK:
+      return {
+        ...state,
+        elapsedTime: action.toTime
       };
 
     case VOLUME:
