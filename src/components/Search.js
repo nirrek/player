@@ -1,22 +1,32 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 
-const Search = ({ query, onSearch, onChange }) => {
-  return (
-    <form
-      style={styles.form}
-      key="input"
-      onSubmit={event => {
-        event.preventDefault();
-        onSearch();
-    }}>
-      <input type="text"
-             value={query}
-             onChange={event => onChange(event.target.value)}
-             style={styles.input}
-             key="input"/>
-    </form>
-  );
+
+class Search extends Component {
+  componentDidMount() {
+    this.refs.input.focus();
+  }
+
+  render() {
+    const { query, onSearch, onChange } = this.props;
+
+    return (
+      <form
+        style={styles.form}
+        key="input"
+        onSubmit={event => {
+          event.preventDefault();
+          onSearch();
+      }}>
+        <input type="text"
+               ref="input"
+               value={query}
+               onChange={event => onChange(event.target.value)}
+               style={styles.input}
+               key="input"/>
+      </form>
+    );
+  }
 }
 
 Search.propTypes = {
