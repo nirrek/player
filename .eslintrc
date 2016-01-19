@@ -11,7 +11,7 @@
   "rules": {
     "quotes": [2, "single"],
     "strict": [2, "never"],
-    "babel/generator-star-spacing": 1,
+    "babel/generator-star-spacing": [1, { "before": false, "after": true }],
     "babel/new-cap": 1,
     "babel/object-shorthand": 1,
     "babel/arrow-parens": 0,
