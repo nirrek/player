@@ -12,6 +12,10 @@ import { Router, Route } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Slider from './components/Controls/Slider.js';
 
+// My custom enhanced version of redux-saga v0.4.1
+import sagaMiddleware from './vendor/redux-saga/lib/index.js';
+import sagas from './sagas/sagas.js';
+
 require('./main.css');
 
 SC.initialize({
@@ -19,7 +23,8 @@ SC.initialize({
 });
 
 const createStoreWithMiddleware = applyMiddleware(
-  thunkMiddleware
+  thunkMiddleware,
+  sagaMiddleware(sagas)
 )(createStore);
 
 const store = createStoreWithMiddleware(rootReducer);
