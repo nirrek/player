@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { searchQuery, search, playList, togglePlayPause,
+import { searchQuery, searchRequest, playList, togglePlayPause,
   next, prev, seek, volume } from '../actions/player.js';
 import Search from './Search.js';
 import Controls from './Controls/Controls.js';
@@ -23,7 +23,7 @@ export default class Player extends Component {
 
   handleSearch() {
     const { store } = this.context;
-    store.dispatch(search());
+    store.dispatch(searchRequest());
   }
 
   render() {
