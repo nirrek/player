@@ -1,0 +1,9 @@
+/* box sizing reset */
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  line-height: 1.5;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
