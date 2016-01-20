@@ -40,7 +40,7 @@ const splitTagList = (tagList) => {
 
     // start of multiword tag
     else if (ch === `"`) {
-      for (j = i + 1; j < tagList.length; j++) {
+      for (let j = i + 1; j < tagList.length; j++) {
         const ch_ = tagList[j];
         if (ch_ === `"`) {
           list.push(token);
