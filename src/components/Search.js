@@ -39,19 +39,19 @@ const styles = {
     boxShadow: '0 1px 3px rgba(0,0,0,.3)',
   },
   input: {
-    border: 'none',
     width: '100%',
     height: '100%',
-    padding: '.5em 0',
+    padding: '.32em 0 .5em 0',
     fontSize: 25,
     fontWeight: 600,
     color: '#fff',
+    borderTop: 'none',
+    borderLeft: 'none',
+    borderRight: 'none',
     borderBottom: '1px solid rgba(255, 255, 255, .3)',
     backgroundColor: 'transparent',
-    transition: 'border-bottom 100ms ease-out',
     ':focus': {
       outline: 'none',
-      borderBottom: '1px solid rgba(255, 255, 255, .4)',
     }
   }
 };
