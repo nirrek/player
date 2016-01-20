@@ -33,7 +33,8 @@ Search.defaultProps = {
 
 const styles = {
   form: {
-    backgroundColor: '#eee',
+    backgroundColor: '#F5FBFF',
+    boxShadow: '0 1px 3px rgba(118, 132, 142, .7)',
     padding: '1em'
   },
   input: {
@@ -42,7 +43,10 @@ const styles = {
     height: '100%',
     fontSize: 25,
     fontWeight: 600,
+    color: '#374754',
+    textShadow: '0 1px 0 #fff',
     backgroundColor: 'transparent',
+    textAlign: 'center',
     ':focus': {
       outline: 'none',
     }
