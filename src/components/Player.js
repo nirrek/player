@@ -4,6 +4,7 @@ import { searchQuery, search, playList, togglePlayPause,
 import Search from './Search.js';
 import Controls from './Controls/Controls.js';
 import ResultsList from './ResultsList.js';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 export default class Player extends Component {
   constructor(props) {
@@ -32,14 +33,18 @@ export default class Player extends Component {
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <div style={{ flexShrink: 1 }}>
+        <div style={{ flexShrink: 1, zIndex: 1 }}>
           <Search query={query}
             onSearch={this.handleSearch}
             onChange={this.handleQueryChange} />
         </div>
-        <div style={{ display: 'flex', flexGrow: 1, overflow: 'scroll' }}>
+        <Scrollbars
+          style={{ flexGrow: 1, height: 'auto', display: 'flex' }}
+          renderView={({ style, ...rest}) => (
+            <div style={{ ...style, height: 'auto' }} {...rest} />
+          )}>
           <ResultsList />
-        </div>
+        </Scrollbars>
         <div style={{ height: 70, width: '100%',
           backgroundColor: '#efefef', flexShrink: 1 }}>
           <Controls />
