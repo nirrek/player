@@ -2,7 +2,22 @@
   "presets": ["react", "es2015", "stage-0"],
   "env": {
     "development": {
-      "presets": ["react-hmre"]
+      "presets": ["react-hmre"],
+      "plugins": [
+        ["css-in-js", {
+          "bundleFile": "dist/bundle.css"
+        }]
+      ]
+    },
+    "production": {
+      "plugins": [
+        ["css-in-js", {
+          "vendorPrefixes": true,
+          "minify": true,
+          "compressClassNames": true,
+          "bundleFile": "dist/bundle.css"
+        }]
+      ]
     }
-  }
+  },
 }
