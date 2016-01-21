@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import Radium from 'radium';
+import Input from './Input.js';
+import SearchIcon from 'react-icons/lib/md/search';
 
 const Search = ({ query, onSearch, onChange }) => {
   return (
@@ -10,11 +11,16 @@ const Search = ({ query, onSearch, onChange }) => {
         event.preventDefault();
         onSearch();
     }}>
-      <input type="text"
+      <Input placeholder="Search #tags or artists"
+             icon={
+              <SearchIcon width={37} height={37}
+               style={{ marginRight: 5, color: 'rgba(255, 255, 255,1)' }} />
+             }
+             inputStyle={styles.input}
+             containerStyle={styles.inputContainer}
              value={query}
              onChange={event => onChange(event.target.value)}
-             style={styles.input}
-             key="input"/>
+             onReturn={() => onSearch() } />
     </form>
   );
 }
@@ -39,21 +45,17 @@ const styles = {
     boxShadow: '0 1px 3px rgba(0,0,0,.3)',
   },
   input: {
-    width: '100%',
-    height: '100%',
     padding: '.32em 0 .5em 0',
     fontSize: 25,
     fontWeight: 600,
     color: '#fff',
+  },
+  inputContainer: {
     borderTop: 'none',
     borderLeft: 'none',
     borderRight: 'none',
     borderBottom: '1px solid rgba(255, 255, 255, .3)',
-    backgroundColor: 'transparent',
-    ':focus': {
-      outline: 'none',
-    }
   }
 };
 
-export default Radium(Search);
+export default Search;
