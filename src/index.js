@@ -13,6 +13,7 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Slider from './components/Controls/Slider.js';
 
 require('./main.css');
+require('../dist/bundle.css');
 
 SC.initialize({
   client_id: 'ba20838472e3ce0703c257f22404c8ea'
