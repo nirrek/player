@@ -140,14 +140,14 @@ const styles = {
   },
   bar: {
     height: 2,
-    backgroundColor: '#1EA1FF',
+    backgroundColor: '#0097FF',
     position: 'relative',
   },
   handle: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#1EA1FF',
+    backgroundColor: '#0097FF',
     position: 'absolute',
     boxShadow: '0 1px 1px rgba(0,0,0,.2)',
     right: -5,

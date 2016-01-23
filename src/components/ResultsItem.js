@@ -89,7 +89,7 @@ const ResultItem = ({
   };
 
   return isActive ? (
-    <div style={{ background: '#1EA1FF', padding: '1em', color: '#fff' }}>
+    <div style={{ background: '#0097FF', padding: '1em', color: '#fff' }}>
       <div style={{ display: 'flex' }}>
         <img style={{ borderRadius: 75 }}
           width="150" height="150" src={largeArtworkUrl(artwork_url)} />

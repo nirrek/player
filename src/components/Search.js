@@ -39,7 +39,7 @@ Search.defaultProps = {
 
 const styles = {
   form: {
-    backgroundColor: '#1EA1FF',
+    backgroundColor: '#0097FF',
     boxShadow: '0 1px 3px rgba(118, 132, 142, .7)',
     padding: '1em 1.5em',
     boxShadow: '0 1px 3px rgba(0,0,0,.3)',
@@ -47,7 +47,8 @@ const styles = {
   input: {
     padding: '.32em 0 .5em 0',
     fontSize: 25,
-    fontWeight: 600,
+    fontFamily: `HelveticaNeue-Thin, 'Helvetica Neue Thin', 'Segoe UI',
+    'Helvetica Neue', Helvetica, Arial`,
     color: '#fff',
   },
   inputContainer: {
