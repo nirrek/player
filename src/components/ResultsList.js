@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { playList } from '../actions/player.js';
 import ResultsItem from './ResultsItem.js';
+import Spinner from 'react-spinkit';
 
 export default class ResultsList extends Component {
   constructor(props) {
@@ -21,8 +22,15 @@ export default class ResultsList extends Component {
     const { results, isFetching, error, activeTrackId } = this.context.store.getState();
 
     return (
-      <div style={{ padding: '7px 0' }}>
-        {isFetching && <div>Fetching results...</div>}
+      <div style={{ padding: '7px 0', width: '100%', height: '100%' }}>
+        {isFetching &&
+          <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Spinner spinnerName="double-bounce" noFadeIn />
+              <span style={{ color: '#869EAF', marginTop: 5 }}>Fetching results...</span>
+            </div>
+          </div>
+        }
         {error && <div>Error: {error}</div>}
 
         {results.map(track =>
