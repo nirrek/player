@@ -8,3 +8,13 @@ body {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   color: #222;
 }
+
+/*
+ * Spinner Component
+ * This react component unfortunately doesn't expose inline-style configuration
+ * props, so that's why we aren't colocating the styles with the component.
+ */
+div .double-bounce1, div .double-bounce2 {
+  background-color: #0097FF;
+}
+
