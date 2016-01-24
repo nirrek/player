@@ -29,8 +29,22 @@ module.exports = {
         loaders: ['style-loader', 'css-loader'],
         include: [
           path.join(__dirname, 'src'),
-          path.join(__dirname, 'dist')
+          path.join(__dirname, 'dist'),
+          path.join(__dirname, 'node_modules/react-spinkit/css'),
         ],
+      },
+    ],
+    postLoaders: [
+      {
+        test: /\.jsx?$/,
+        include: path.join(__dirname, 'src'),
+        loader: 'npm-install-loader',
+        query: {
+          cli: {
+            save: true,
+            saveExact: true,
+          }
+        }
       },
     ]
   }
