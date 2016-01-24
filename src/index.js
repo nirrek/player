@@ -11,6 +11,7 @@ import Player from './components/Player.js';
 import { Router, Route } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import Slider from './components/Controls/Slider.js';
+import Palette from './components/Palette.js';
 
 require('./main.css');
 require('../dist/bundle.css');
@@ -33,6 +34,7 @@ render(
     <Router history={createBrowserHistory()}>
       <Route path="/" component={Player} />
       <Route path="slider" component={Slider} />
+      <Route path="palette" component={Palette} />
     </Router>
   </Provider>,
   document.getElementById('root')
