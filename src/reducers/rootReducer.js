@@ -30,6 +30,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         isFetching: true,
         error: '',
+        results: [],
       };
 
     case SEARCH_RESPONSE_FAILURE:
