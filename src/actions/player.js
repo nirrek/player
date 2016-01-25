@@ -1,4 +1,4 @@
-import SC from 'soundcloud';
+import Soundcloud from 'soundcloud';
 // ACTIONS - player
 
 // -----------------------------------------------------------------------------
@@ -33,7 +33,7 @@ export const search = () =>
     const { query } = getState();
     dispatch(searchRequest());
 
-    return SC.get('/tracks', { q: query })
+    return Soundcloud.get('/tracks', { q: query })
       .then(tracks => {
         dispatch(searchResponseSuccess(tracks))
       })
@@ -104,7 +104,7 @@ const play = (trackId) =>
       return Promise.resolve();
     }
 
-    return SC.stream(`/tracks/${trackId}`)
+    return Soundcloud.stream(`/tracks/${trackId}`)
       .then(sound => {
         dispatch(addSound(trackId, sound));
         return sound;
