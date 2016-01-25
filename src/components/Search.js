@@ -12,6 +12,7 @@ const Search = ({ query, onSearch, onChange }) => {
         onSearch();
     }}>
       <Input placeholder="Search #tags or artists"
+             autoFocus
              icon={
               <SearchIcon width={37} height={37}
                style={{ marginRight: 5, color: 'rgba(255, 255, 255,1)' }} />
