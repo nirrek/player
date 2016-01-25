@@ -1,4 +1,5 @@
 import Soundcloud from 'soundcloud';
+import { log } from '../utils/utils.js';
 // ACTIONS - player
 
 // -----------------------------------------------------------------------------
@@ -33,11 +34,10 @@ export const search = () =>
     const { query } = getState();
     dispatch(searchRequest());
 
-    return Soundcloud.get('/tracks', { q: query })
-      .then(tracks => {
-        dispatch(searchResponseSuccess(tracks))
-      })
-      .catch(err => dispatch(searchResponseFailure(err.message)));
+    return Soundcloud.get('/tracks', { q: query, limit: 100 })
+      .then(tracks => dispatch(searchResponseSuccess(tracks)))
+      .catch(err => dispatch(searchResponseFailure(err.message)))
+      .catch(log);
   };
 
 
@@ -113,7 +113,7 @@ const play = (trackId) =>
                        ? sound
                        : Promise.reject('Non-latest play request resolved'))
       .then (sound => dispatch(playSound(trackId, sound)))
-      .catch(err => console.log(err));
+      .catch(log);
   };
 
 // Plays the given sound. Sets up and tears down appropriate event handlers
