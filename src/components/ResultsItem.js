@@ -2,8 +2,11 @@ import React from 'react';
 import Play from 'react-icons/lib/md/play-arrow';
 import Heart from 'react-icons/lib/md/favorite';
 
-
+// largeArtworkUrl :: String -> String
+// Given an artwork URL produces a new URL for fetching the large variant of
+// the artwork from. If no artwork URL is given, produces the empty string.
 const largeArtworkUrl = (artworkUrl) => {
+  if (!artworkUrl) return '';
   const suffixLength = 9; // suffix is 'large.jpg'
   const base = artworkUrl.slice(0, -suffixLength);
   return base + 't300x300.jpg';
