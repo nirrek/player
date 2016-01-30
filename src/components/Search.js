@@ -1,29 +1,38 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Input from './Input.js';
 import SearchIcon from 'react-icons/lib/md/search';
 
-const Search = ({ query, onSearch, onChange }) => {
-  return (
-    <form
-      style={styles.form}
-      key="input"
-      onSubmit={event => {
-        event.preventDefault();
-        onSearch();
-    }}>
-      <Input placeholder="Search #tags or artists"
-             autoFocus
-             icon={
-              <SearchIcon width={37} height={37}
-               style={{ marginRight: 5, color: 'rgba(255, 255, 255,1)' }} />
-             }
-             inputStyle={styles.input}
-             containerStyle={styles.inputContainer}
-             value={query}
-             onChange={event => onChange(event.target.value)}
-             onReturn={() => onSearch() } />
-    </form>
-  );
+class Search extends Component {
+  shouldComponentUpdate(newProps) {
+    // onSearch and onChange will not be updateable after mounting.
+    return newProps.query !== this.props.query;
+  }
+
+  render() {
+    const { query, onSearch, onChange } = this.props;
+
+    return (
+      <form
+        style={styles.form}
+        key="input"
+        onSubmit={event => {
+          event.preventDefault();
+          onSearch();
+      }}>
+        <Input placeholder="Search #tags or artists"
+               autoFocus
+               icon={
+                <SearchIcon width={37} height={37}
+                 style={{ marginRight: 5, color: 'rgba(255, 255, 255,1)' }} />
+               }
+               inputStyle={styles.input}
+               containerStyle={styles.inputContainer}
+               value={query}
+               onChange={event => onChange(event.target.value)}
+               onReturn={() => onSearch() } />
+      </form>
+    );
+  }
 }
 
 Search.propTypes = {
