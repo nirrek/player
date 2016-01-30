@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Play from 'react-icons/lib/md/play-arrow';
 import Heart from 'react-icons/lib/md/favorite';
 
@@ -66,68 +66,72 @@ const splitTagList = (tagList) => {
   return list;
 }
 
-window.splitTagList = splitTagList;
+class ResultItem extends Component {
+  shouldComponentUpdate(nextProps) {
+    const { nextActiveTrackId } = nextProps;
+    const { id, activeTrackId } = this.props;
 
-const ResultItem = ({
-  id,
-  title,
-  artwork_url,
-  activeTrackId,
-  handlePlay,
-  user,
-  playback_count,
-  likes_count,
-  tag_list,
-}) => {
-  const isActive = (id === activeTrackId);
-  const tagList = splitTagList(tag_list);
-  tagList.length = 5; // only display 5 tags.
+    // Only update if our activeTrack status has changed.
+    return (
+      nextActiveTrackId !== activeTrackId &&      // new active track
+      id === (activeTrackId || nextActiveTrackId) // our active status changed
+    );
+  }
 
-  const style = {
-    display: 'flex',
-    flexShrink: 0,
-    padding: '10px 16px',
-    borderBottom: '1px solid rgba(100,100,100,.1)',
-    alignItems: 'center',
-  };
+  render() {
+    const { id, title, artwork_url, activeTrackId, handlePlay, user,
+      playback_count, likes_count, tag_list } = this.props;
 
-  return isActive ? (
-    <div style={{ background: '#0097FF', padding: '1em', color: '#fff' }}>
-      <div style={{ display: 'flex' }}>
-        <img style={{ borderRadius: 75 }}
-          width="150" height="150" src={largeArtworkUrl(artwork_url)} />
-        <div style={{ marginLeft: '2em', display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
-          <h3 style={{ margin: 0, textShadow: '0 1px 1px rgba(0,0,0,.1)'}}>{title}</h3>
-          <h4 style={{ margin: 0, opacity: 0.9, fontSize: 14 }}>{user.username}</h4>
-          <div style={{ marginTop: '1em', color: '#005592', fontSize: 14, fontWeight: 'bold' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginLeft: -5 }}>
-              <Play width={22} height={22} /> {numberAbbreviation(playback_count)}
-               <Heart width={18} height={18} style={{ margin: '0 3px 0 16px' }} /> {numberAbbreviation(likes_count)}
-            </div>
+    const isActive = (id === activeTrackId);
+    const tagList = splitTagList(tag_list);
+    tagList.length = 5; // only display 5 tags.
 
-            <div style={{ marginTop: 5 }}>
-              {tagList.map(tag =>
-                <span style={{
-                  marginRight: 8, display: 'inline-block', padding: '3px 9px', backgroundColor: '#005592', color: '#1EA1FF', borderRadius: 20, fontSize: 13
-                }}>
-                  #{tag}
-                </span>
-              )}
+    const style = {
+      display: 'flex',
+      flexShrink: 0,
+      padding: '10px 16px',
+      borderBottom: '1px solid rgba(100,100,100,.1)',
+      alignItems: 'center',
+    };
+
+    return isActive ? (
+      <div style={{ background: '#0097FF', padding: '1em', color: '#fff' }}>
+        <div style={{ display: 'flex' }}>
+          <img style={{ borderRadius: 75 }}
+            width="150" height="150" src={largeArtworkUrl(artwork_url)} />
+          <div style={{ marginLeft: '2em', display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
+            <h3 style={{ margin: 0, textShadow: '0 1px 1px rgba(0,0,0,.1)'}}>{title}</h3>
+            <h4 style={{ margin: 0, opacity: 0.9, fontSize: 14 }}>{user.username}</h4>
+            <div style={{ marginTop: '1em', color: '#005592', fontSize: 14, fontWeight: 'bold' }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginLeft: -5 }}>
+                <Play width={22} height={22} /> {numberAbbreviation(playback_count)}
+                 <Heart width={18} height={18} style={{ margin: '0 3px 0 16px' }} /> {numberAbbreviation(likes_count)}
+              </div>
+
+              <div style={{ marginTop: 5 }}>
+                {tagList.map(tag =>
+                  <span key={tag} style={{
+                    marginRight: 8, display: 'inline-block', padding: '3px 9px', backgroundColor: '#005592', color: '#1EA1FF', borderRadius: 20, fontSize: 13
+                  }}>
+                    #{tag}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
+        {/*
+        <img src={dataUrl} style={{ marginTop: '1em' }} />
+        */}
       </div>
-      {/*
-      <img src={dataUrl} style={{ marginTop: '1em' }} />
-      */}
-    </div>
-  ) : (
-    <div style={{...style }} onClick={() => handlePlay(id)}>
-      <img style={{ width: 40, height: 40, borderRadius: 20 }}
-         src={largeArtworkUrl(artwork_url)} />
-       <span style={{ fontSize: 14, margin: '0 1em' }}>{title}</span>
-    </div>
-  )
+    ) : (
+      <div style={{...style }} onClick={() => handlePlay(id)}>
+        <img style={{ width: 40, height: 40, borderRadius: 20 }}
+           src={largeArtworkUrl(artwork_url)} />
+         <span style={{ fontSize: 14, margin: '0 1em' }}>{title}</span>
+      </div>
+    )
+  }
 }
 
 export default ResultItem;
