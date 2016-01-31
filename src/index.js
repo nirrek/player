@@ -3,7 +3,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import Soundcloud from 'soundcloud';
 import configureStore from './store/configureStore.js';
-import Root from './containers/Root.js';
+import { Provider } from 'react-redux';
+import App from './components/App.js';
 
 require('./main.css');
 require('../dist/bundle.css');
@@ -15,6 +16,8 @@ Soundcloud.initialize({
 const store = configureStore();
 
 render(
-  <Root store={store} />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
