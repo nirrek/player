@@ -196,9 +196,12 @@ const _volume = (volume) => ({
 });
 
 export const volume = (newVolume) =>
-  (dispatch, getStack) => {
+  (dispatch, getState) => {
     const { activeTrackId, sounds } = getState();
-    sounds[activeTrackId].setVolume(newVolume);
+    const sound = sounds[activeTrackId];
+    if (sound) {
+      sound.setVolume(newVolume);
+    }
     dispatch(_volume(newVolume));
   }
 
