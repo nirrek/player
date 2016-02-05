@@ -1,3 +1,4 @@
+/* @flow */
 import SC from 'soundcloud';
 
 // All this stateful stuff needs to be in a store.
@@ -85,11 +86,11 @@ export const playOrPause = () => {
 // that resolves once the next track is playing.
 export const next = () => {
   pause();
-  const nextTrackId = nextTrack(tracks, activeTrackId).id;
-  if (!nextTrackId)
+  const nextTrack = nextTrack(tracks, activeTrackId);
+  if (!nextTrack)
     return Promise.reject('No next track');
-  activeTrackId = nextTrackId;
-  return play(nextTrackId);
+  activeTrackId = nextTrack.id;
+  return play(activeTrackId);
 }
 
 // nextTrack :: ([Track], Id) -> Track | null
