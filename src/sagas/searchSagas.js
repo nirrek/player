@@ -8,7 +8,7 @@ import {
 import { takeLatest } from './sagaUtils.js';
 import soundcloud from 'soundcloud';
 
-function* search(getQuery) {
+function* search(action, getQuery) {
 
   try {
     const tracks = yield call(
