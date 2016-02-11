@@ -7,6 +7,7 @@ import {
 } from '../actions/player.js';
 import soundcloud from 'soundcloud';
 import { createChannel, CLOSED } from 'barebones-channel';
+import { takeLatest } from './sagaUtils.js';
 
 // -----------------------------------------------------------------------------
 //  Helpers
@@ -67,10 +68,6 @@ function* monitorSoundProgress(sound) {
 // Plays a track
 // Extracted into a generator to ensure it is an atomic transaction.
 function* playSound(sound, volume, trackId) {
-  // TODO this will make duplicate sagas if repeatedly play same track
-  // without the track finishing. We need a way to kill the saga if one
-  // of the play actions happens.
-
   yield fork(monitorSoundProgress, sound);
   yield call([sound, sound.setVolume], volume);
   yield call([sound, sound.play]);
@@ -138,6 +135,11 @@ function* takePlayCausingAction() {
   return true; // indicate saga completion (for use in a race)
 }
 
+function* changeVolume({ volume }, getActiveSound) {
+  const sound = getActiveSound();
+  if (sound) yield call([sound, sound.setVolume], volume);
+}
+
 
 // -----------------------------------------------------------------------------
 //  Watchers
@@ -186,21 +188,20 @@ function* watchSeek(getState) {
   }
 }
 
-function* watchVolume(getState) {
-  while (true) {
-    const { volume } = yield take(VOLUME);
-    const { activeTrackId, sounds } = getState();
-    const sound = sounds[activeTrackId];
-    if (sound)
-      yield call([sound, sound.setVolume], volume);
-  }
+function* watchVolume(getActiveSound) {
+  yield* takeLatest(VOLUME, changeVolume, getActiveSound);
 }
 
 export default function* playerSagas(getState: Function): Generator {
+  const getActiveSound = () => {
+    const { activeTrackId, sounds } = getState();
+    return sounds[activeTrackId];
+  }
+
   yield fork(watchPlayTrackInResults, getState);
   yield fork(watchNextTrack, getState);
   yield fork(watchPrevTrack, getState);
   yield fork(watchTogglePlayPause, getState);
   yield fork(watchSeek, getState);
-  yield fork(watchVolume, getState);
+  yield fork(watchVolume, getActiveSound);
 }
