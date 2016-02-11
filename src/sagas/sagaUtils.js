@@ -10,10 +10,10 @@ export function takeLatest(actionType: string, subtask: Generator,
     let action, task;
     while (action = yield take(actionType)) {
       if (task) yield cancel(task);
-      task = yield fork(subtask, ...subtaskArgs);
+      task = yield fork(subtask, action, ...subtaskArgs);
     }
   })();
-}; 
+};
 
 export function delay(ms: number): Promise {
   return new Promise(resolve => {
