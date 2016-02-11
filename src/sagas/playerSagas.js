@@ -1,9 +1,9 @@
 /* @flow */
 import { take, put, fork, call, apply, race, SagaCancellationException, cancel } from 'redux-saga';
-import { PLAY_TRACK_IN_RESULTS, PLAY_TRACK_IN_QUEUE, PLAY_START,
-NEXT_TRACK, PREV_TRACK, SOUNDSTREAM_REQUEST, SOUNDSTREAM_RESPONSE_SUCCESS,
-SOUNDSTREAM_RESPONSE_FAILURE, UPDATE_TIME, TOGGLE_PLAY_PAUSE, SEEK, VOLUME,
-SEARCH_REQUEST, SEARCH_RESPONSE_FAILURE, SEARCH_RESPONSE_SUCCESS
+import {
+  PLAY_TRACK_IN_RESULTS, PLAY_TRACK_IN_QUEUE, PLAY_START,
+  NEXT_TRACK, PREV_TRACK, SOUNDSTREAM_REQUEST, SOUNDSTREAM_RESPONSE_SUCCESS,
+  SOUNDSTREAM_RESPONSE_FAILURE, UPDATE_TIME, TOGGLE_PLAY_PAUSE, SEEK, VOLUME,
 } from '../actions/player.js';
 import soundcloud from 'soundcloud';
 import { createChannel, CLOSED } from 'barebones-channel';
@@ -11,9 +11,6 @@ import { createChannel, CLOSED } from 'barebones-channel';
 // -----------------------------------------------------------------------------
 //  Helpers
 // -----------------------------------------------------------------------------
-// temp debugging function.
-const delay = (ms) =>
-  new Promise(resolve => setTimeout(() => resolve(), ms));
 
 // nextTrackId :: ([Track], TrackId) -> TrackId | undefined
 // Produces the trackId of the track following the given TrackId. If there is
@@ -57,7 +54,6 @@ function* updateElapsedTimeOnChange(chan) {
 
 function* monitorSoundProgress(sound) {
   const chan = yield call(createTimeChannel, sound);
-
 
   const { soundCompleted } = yield race({
     soundCompleted: call(updateElapsedTimeOnChange, chan),
@@ -146,20 +142,6 @@ function* takePlayCausingAction() {
 // -----------------------------------------------------------------------------
 //  Watchers
 // -----------------------------------------------------------------------------
-
-// Produces a generator that only allows one concurrent subtask at a time.
-// If a second actionType is received while the first subtask is still in
-// progress the first subtask will be automatically cancelled.
-const takeLatest = (actionType, subtask, ...subtaskArgs) => (
-  function* () {
-    let action, task;
-    while (action = yield take(actionType)) {
-      if (task) yield cancel(task);
-      task = yield fork(subtask, ...subtaskArgs);
-    }
-  }()
-);
-
 function* watchPlayTrackInResults(getState) {
   while (true) {
     const { trackId } = yield take(PLAY_TRACK_IN_RESULTS);
@@ -214,30 +196,11 @@ function* watchVolume(getState) {
   }
 }
 
-function* search(getQuery) {
-  try {
-    const tracks = yield call(
-      [soundcloud, soundcloud.get],
-      '/tracks', { q: getQuery(), limit: 100 }
-    );
-    yield put({ type: SEARCH_RESPONSE_SUCCESS, tracks });
-  } catch (error) {
-    if (!(error instanceof SagaCancellationException))
-      yield put({ type: SEARCH_RESPONSE_FAILURE, error: error.message });
-  }
-}
-
-function* watchSearchRequest(getState) {
-  const getQuery = () => getState().query;
-  yield* takeLatest(SEARCH_REQUEST, search, getQuery);
-}
-
-export default function* rootSaga(getState): Object {
+export default function* playerSagas(getState: Function): Generator {
   yield fork(watchPlayTrackInResults, getState);
   yield fork(watchNextTrack, getState);
   yield fork(watchPrevTrack, getState);
   yield fork(watchTogglePlayPause, getState);
   yield fork(watchSeek, getState);
   yield fork(watchVolume, getState);
-  yield fork(watchSearchRequest, getState);
 }
