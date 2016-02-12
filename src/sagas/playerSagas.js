@@ -1,7 +1,7 @@
 /* @flow */
 import { take, put, fork, call, apply, race, SagaCancellationException, cancel } from 'redux-saga';
 import {
-  PLAY_TRACK_IN_RESULTS, PLAY_TRACK_IN_QUEUE, PLAY_START,
+  PLAY_TRACK_IN_RESULTS, PLAY_TRACK_IN_QUEUE, PLAY_START, PLAY_INITIATED,
   NEXT_TRACK, PREV_TRACK, SOUNDSTREAM_REQUEST, SOUNDSTREAM_RESPONSE_SUCCESS,
   SOUNDSTREAM_RESPONSE_FAILURE, UPDATE_TIME, TOGGLE_PLAY_PAUSE, SEEK, VOLUME,
 } from '../actions/player.js';
@@ -14,8 +14,6 @@ import { takeLatest } from './sagaUtils.js';
 // -----------------------------------------------------------------------------
 
 // nextTrackId :: ([Track], TrackId) -> TrackId | undefined
-// Produces the trackId of the track following the given TrackId. If there is
-// no nextTrack, produces undefined.
 const nextTrackId = (tracks, trackId) => {
   const idx = tracks.findIndex(t => t.id === trackId);
   if (idx === tracks.length - 1 || idx === -1) return undefined;
@@ -79,6 +77,7 @@ function* playSound(sound, volume, trackId) {
 
 // Plays the track with the specified trackId
 function* playTrack(getState, trackId) {
+  yield put({ type: PLAY_INITIATED, trackId });
   const { sounds, volume } = getState().player;
   let sound = sounds[trackId];
   try {
@@ -109,12 +108,11 @@ function* playTrack(getState, trackId) {
 // played, the task will automatically be cancelled.
 function* playTrackTask(getState, trackId) {
   const { isPlaying, activeTrackId, sounds } = getState().player;
+  let activeSound = sounds[activeTrackId]
 
-  if (isPlaying) {
-    const activeSound = sounds[activeTrackId];
+  if (isPlaying && activeSound) {
+    // isPlaying state maintained on next/prevTrack, but sound can be unloaded
     yield call([activeSound, activeSound.pause]);
-    // TODO if we dispatched an action here, what PERF impact is there?
-    // My intuition is that it means an entire render cycle 100ms+
   }
 
   yield race([

@@ -24,6 +24,7 @@ export const search = (): Object => ({
 export const PLAY_TRACK_IN_RESULTS = 'PLAY_TRACK_IN_RESULTS';
 export const PLAY_TRACK_IN_QUEUE = 'PLAY_TRACK_IN_QUEUE';
 export const PLAY_START = 'PLAY_START';
+export const PLAY_INITIATED = 'PLAY_INITIATED';
 export const NEXT_TRACK = 'NEXT_TRACK';
 export const PREV_TRACK = 'PREV_TRACK';
 export const TOGGLE_PLAY_PAUSE = 'TOGGLE_PLAY_PAUSE';

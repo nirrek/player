@@ -82,8 +82,6 @@ class ResultItem extends Component {
     const { id, title, artwork_url, activeTrackId, handlePlay, user,
       playback_count, likes_count, tag_list } = this.props;
 
-    console.log(`rerednering item ${id}`);
-
     const isActive = (id === activeTrackId);
     const tagList = splitTagList(tag_list);
     const numTagsToShow = 5;

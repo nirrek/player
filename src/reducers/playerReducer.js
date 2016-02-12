@@ -1,4 +1,4 @@
-import { UPDATE_TIME, VOLUME, PLAY_START,
+import { UPDATE_TIME, VOLUME, PLAY_START, PLAY_INITIATED,
   SOUNDSTREAM_REQUEST, SOUNDSTREAM_RESPONSE_SUCCESS, SOUNDSTREAM_RESPONSE_FAILURE,
   TOGGLE_PLAY_PAUSE, SEEK, PLAY_TRACK_IN_RESULTS
 } from '../actions/player.js';
@@ -56,11 +56,16 @@ function playerReducer(state: Object = initialState, action: Object,
         isFetchingSound: false
       };
 
+    case PLAY_INITIATED:
+      return {
+        ...state,
+        activeTrackId: action.trackId,
+      };
+
     case PLAY_START:
       return {
         ...state,
         isPlaying: true,
-        activeTrackId: action.trackId,
       };
 
     case TOGGLE_PLAY_PAUSE:
