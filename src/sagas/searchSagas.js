@@ -23,7 +23,7 @@ function* search(action, getQuery) {
 }
 
 function* watchSearchRequest(getState) {
-  const getQuery = () => getState().query;
+  const getQuery = () => getState().search.query;
   yield* takeLatest(SEARCH_REQUEST, search, getQuery);
 }
 

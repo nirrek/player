@@ -19,7 +19,8 @@ export default class ResultsList extends Component {
   }
 
   render() {
-    const { results, isFetching, error, activeTrackId } = this.context.store.getState();
+    const { results, isFetching, error } = this.context.store.getState().search;
+    const { activeTrackId } = this.context.store.getState().player;
 
     return (
       <div style={{ padding: '7px 0', width: '100%', height: '100%' }}>

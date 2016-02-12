@@ -61,7 +61,7 @@ export default class Controls extends Component {
 
   render() {
     const { store } = this.context;
-    const { isPlaying, activeTrackId, tracks, elapsedTime, volume } = store.getState();
+    const { isPlaying, activeTrackId, tracks, elapsedTime, volume } = store.getState().player;
     const track = tracks.find(t => t.id === activeTrackId);
     const doDisablePlay = !activeTrackId;
     const doDisablePrev = !hasPrevTrack(tracks, activeTrackId);

@@ -29,7 +29,8 @@ export default class Player extends Component {
 
   render() {
     const { store } = this.context;
-    const { query, isFetching, error, results, activeTrackId } = store.getState();
+    const { query, isFetching, error, results } = store.getState().search;
+    const { activeTrackId } = store.getState().player;
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>

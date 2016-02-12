@@ -79,7 +79,7 @@ function* playSound(sound, volume, trackId) {
 
 // Plays the track with the specified trackId
 function* playTrack(getState, trackId) {
-  const { sounds, volume } = getState();
+  const { sounds, volume } = getState().player;
   let sound = sounds[trackId];
   try {
     if (!sound) {
@@ -108,7 +108,7 @@ function* playTrack(getState, trackId) {
 // If another action is dispatched that will cause a different track to be
 // played, the task will automatically be cancelled.
 function* playTrackTask(getState, trackId) {
-  const { isPlaying, activeTrackId, sounds } = getState();
+  const { isPlaying, activeTrackId, sounds } = getState().player;
 
   if (isPlaying) {
     const activeSound = sounds[activeTrackId];
@@ -141,7 +141,7 @@ function* playTrackInResults({ trackId }, getState) {
 }
 
 function* togglePlayPause(action, getState) {
-  const { isPlaying, sounds, activeTrackId } = getState();
+  const { isPlaying, sounds, activeTrackId } = getState().player;
   const sound = sounds[activeTrackId];
 
   // Note that we are branching on the state after the reducers have updated.
@@ -150,12 +150,12 @@ function* togglePlayPause(action, getState) {
 }
 
 function* playNextTrack(action, getState) {
-  const { tracks, activeTrackId } = getState();
+  const { tracks, activeTrackId } = getState().player;
   yield fork(playTrackTask, getState, nextTrackId(tracks, activeTrackId));
 }
 
 function* playPrevTrack(action, getState) {
-  const { tracks, activeTrackId } = getState();
+  const { tracks, activeTrackId } = getState().player;
   yield fork(playTrackTask, getState, prevTrackId(tracks, activeTrackId));
 }
 
@@ -198,7 +198,7 @@ function* watchVolume(getActiveSound) {
 
 export default function* playerSagas(getState: Function): Generator {
   const getActiveSound = () => {
-    const { activeTrackId, sounds } = getState();
+    const { activeTrackId, sounds } = getState().player;
     return sounds[activeTrackId];
   }
 
