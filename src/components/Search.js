@@ -11,15 +11,8 @@ export default class Search extends Component {
 
   render() {
     const { query, onSearch, onChange } = this.props;
-
     return (
-      <form
-        style={styles.form}
-        key="input"
-        onSubmit={event => {
-          event.preventDefault();
-          onSearch();
-      }}>
+      <div style={styles.form}>
         <Input placeholder="Search #tags or artists"
                autoFocus
                icon={
@@ -31,7 +24,7 @@ export default class Search extends Component {
                value={query}
                onChange={event => onChange(event.target.value)}
                onReturn={() => onSearch() } />
-      </form>
+      </div>
     );
   }
 }
