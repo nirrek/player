@@ -1,26 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { playList } from '../actions/player.js';
-import ResultsItem from './ResultsItem.js';
+import { connect } from 'react-redux';
 import Spinner from 'react-spinkit';
+import { playList } from '../actions/player.js';
+import ResultsItem from '../components/ResultsItem.js';
 
-export default class ResultsList extends Component {
-  constructor(props) {
-    super(props);
-    this.handlePlay = this.handlePlay.bind(this);
-  }
-
-  componentWillMount() {
-    this.context.store.subscribe(() => this.forceUpdate());
-  }
-
-  handlePlay(startTrackId) {
-    const { store } = this.context;
-    store.dispatch(playList(startTrackId));
-  }
-
+class ResultsList extends Component {
   render() {
-    const { results, isFetching, error } = this.context.store.getState().search;
-    const { activeTrackId } = this.context.store.getState().player;
+    const { results, isFetching, error, activeTrackId, playList } = this.props;
 
     return (
       <div style={{ padding: '7px 0', width: '100%', height: '100%' }}>
@@ -38,7 +24,7 @@ export default class ResultsList extends Component {
           <ResultsItem
             key={track.id}
             activeTrackId={activeTrackId}
-            handlePlay={this.handlePlay}
+            handlePlay={playList}
             {...track} />
         )}
       </div>
@@ -49,3 +35,15 @@ export default class ResultsList extends Component {
 ResultsList.contextTypes = {
   store: PropTypes.object
 };
+
+export default connect(
+  (state) => ({
+    results: state.search.results,
+    isFetching: state.search.isFetching,
+    error: state.search.error,
+    activeTrackId: state.player.activeTrackId,
+  }),
+  {
+    playList,
+  }
+)(ResultsList);

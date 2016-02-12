@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Input from './Input.js';
 import SearchIcon from 'react-icons/lib/md/search';
+import { noop } from '../utils/utils.js';
 
-class Search extends Component {
+export default class Search extends Component {
   shouldComponentUpdate(newProps) {
     // onSearch and onChange will not be updateable after mounting.
     return newProps.query !== this.props.query;
@@ -43,8 +44,8 @@ Search.propTypes = {
 
 Search.defaultProps = {
   query: '',
-  onSearch: () => {},
-  onChange: () => {},
+  onSearch: noop,
+  onChange: noop,
 };
 
 const styles = {
@@ -68,5 +69,3 @@ const styles = {
     borderBottom: '1px solid rgba(255, 255, 255, .3)',
   }
 };
-
-export default Search;

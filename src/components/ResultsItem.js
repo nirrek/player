@@ -68,23 +68,26 @@ const splitTagList = (tagList) => {
 
 class ResultItem extends Component {
   shouldComponentUpdate(nextProps) {
-    const { nextActiveTrackId } = nextProps;
+    const { activeTrackId: nextActiveTrackId } = nextProps;
     const { id, activeTrackId } = this.props;
 
-    // Only update if our activeTrack status has changed.
-    return (
-      nextActiveTrackId !== activeTrackId &&      // new active track
-      id === (activeTrackId || nextActiveTrackId) // our active status changed
-    );
+    // Don't update if the currently active track has not changed
+    if (nextActiveTrackId === activeTrackId) return false;
+
+    // Update if our activeTrack status has changed.
+    return (id === activeTrackId || id === nextActiveTrackId);
   }
 
   render() {
     const { id, title, artwork_url, activeTrackId, handlePlay, user,
       playback_count, likes_count, tag_list } = this.props;
 
+    console.log(`rerednering item ${id}`);
+
     const isActive = (id === activeTrackId);
     const tagList = splitTagList(tag_list);
-    tagList.length = 5; // only display 5 tags.
+    const numTagsToShow = 5;
+    tagList.length = numTagsToShow;
 
     const style = {
       display: 'flex',
