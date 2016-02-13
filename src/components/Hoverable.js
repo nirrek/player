@@ -16,10 +16,12 @@ export default class Hoverable extends Component {
   }
 
   render() {
+    const { children, ...rest } = this.props;
     return (
-      <div onMouseOver={this.handleMouseOver}
+      <div {...rest}
+           onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-        {this.props.children}
+        {children}
       </div>
     );
   }
