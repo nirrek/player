@@ -33,9 +33,10 @@ export default class Button extends Component {
 
     return (
       <Hoverable onHoverChange={this.handleHoverChange}>
-        <div onClick={this.handleClick}
-          style={{...style, ...localStyle}}
-          {...rest}>
+        <div style={{...style, ...localStyle}}
+             {...rest}
+             onClick={this.handleClick} // must take precedence over rest.
+        >
           {children}
         </div>
       </Hoverable>
