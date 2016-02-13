@@ -26,9 +26,14 @@ export default class Button extends Component {
   }
 
   render() {
-    const { children, disabled, ...rest } = this.props;
+    const { className, disabled, children, ...rest } = this.props;
+    const buttonClasses = cn(
+      styles.default,
+      { [styles.disabled]: disabled },
+      className,
+    )
     return (
-      <div className={cn(styles.default, { [styles.disabled]: disabled })}
+      <div className={buttonClasses}
            {...rest}
            onClick={this.handleClick} /* must take precedence over rest */>
         {children}
