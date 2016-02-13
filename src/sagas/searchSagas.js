@@ -1,15 +1,12 @@
 /* @flow */
-import {
-  put, take, fork, cancel, call, SagaCancellationException
-} from 'redux-saga';
+import { put, fork, call, SagaCancellationException } from 'redux-saga';
+import soundcloud from 'soundcloud';
 import {
   SEARCH_REQUEST, SEARCH_RESPONSE_FAILURE, SEARCH_RESPONSE_SUCCESS
 } from '../actions/player.js';
 import { takeLatest } from './sagaUtils.js';
-import soundcloud from 'soundcloud';
 
 function* search(action, getQuery) {
-
   try {
     const tracks = yield call(
       [soundcloud, soundcloud.get],
@@ -22,11 +19,12 @@ function* search(action, getQuery) {
   }
 }
 
-function* watchSearchRequest(getState) {
-  const getQuery = () => getState().search.query;
+function* watchSearchRequest(getQuery) {
   yield* takeLatest(SEARCH_REQUEST, search, getQuery);
 }
 
 export default function* searchSagas(getState: Function): Generator {
-  yield fork(watchSearchRequest, getState);
+  const getQuery = () => getState().search.query;
+
+  yield fork(watchSearchRequest, getQuery);
 }

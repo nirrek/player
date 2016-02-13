@@ -69,16 +69,13 @@ function* playSound(sound, volume, trackId) {
   yield fork(monitorSoundProgress, sound);
   yield call([sound, sound.setVolume], volume);
   yield call([sound, sound.play]);
-  yield put({
-    type: PLAY_START,
-    trackId,
-  });
+  yield put({ type: PLAY_START, trackId });
 }
 
 // Plays the track with the specified trackId
-function* playTrack(getState, trackId) {
+function* playTrack(getPlayer, trackId) {
   yield put({ type: PLAY_INITIATED, trackId });
-  const { sounds, volume } = getState().player;
+  const { sounds, volume } = getPlayer();
   let sound = sounds[trackId];
   try {
     if (!sound) {
@@ -106,8 +103,8 @@ function* playTrack(getState, trackId) {
 // Plays the track with the given trackId and corresponding sound object.
 // If another action is dispatched that will cause a different track to be
 // played, the task will automatically be cancelled.
-function* playTrackTask(getState, trackId) {
-  const { isPlaying, activeTrackId, sounds } = getState().player;
+function* playTrackTask(getPlayer, trackId) {
+  const { isPlaying, activeTrackId, sounds } = getPlayer();
   let activeSound = sounds[activeTrackId]
 
   if (isPlaying && activeSound) {
@@ -116,7 +113,7 @@ function* playTrackTask(getState, trackId) {
   }
 
   yield race([
-    call(playTrack, getState, trackId),
+    call(playTrack, getPlayer, trackId),
     call(takePlayCausingAction),
   ]);
 }
@@ -134,12 +131,12 @@ function* takePlayCausingAction() {
 }
 
 
-function* playTrackInResults({ trackId }, getState) {
-  yield fork(playTrackTask, getState, trackId);
+function* playTrackInResults({ trackId }, getPlayer) {
+  yield fork(playTrackTask, getPlayer, trackId);
 }
 
-function* togglePlayPause(action, getState) {
-  const { isPlaying, sounds, activeTrackId } = getState().player;
+function* togglePlayPause(action, getPlayer) {
+  const { isPlaying, sounds, activeTrackId } = getPlayer();
   const sound = sounds[activeTrackId];
 
   // Note that we are branching on the state after the reducers have updated.
@@ -147,14 +144,14 @@ function* togglePlayPause(action, getState) {
   else           yield apply(sound, sound.pause);
 }
 
-function* playNextTrack(action, getState) {
-  const { tracks, activeTrackId } = getState().player;
-  yield fork(playTrackTask, getState, nextTrackId(tracks, activeTrackId));
+function* playNextTrack(action, getPlayer) {
+  const { tracks, activeTrackId } = getPlayer();
+  yield fork(playTrackTask, getPlayer, nextTrackId(tracks, activeTrackId));
 }
 
-function* playPrevTrack(action, getState) {
-  const { tracks, activeTrackId } = getState().player;
-  yield fork(playTrackTask, getState, prevTrackId(tracks, activeTrackId));
+function* playPrevTrack(action, getPlayer) {
+  const { tracks, activeTrackId } = getPlayer();
+  yield fork(playTrackTask, getPlayer, prevTrackId(tracks, activeTrackId));
 }
 
 function* changeVolume({ volume }, getActiveSound) {
@@ -170,20 +167,20 @@ function* seekSoundTo({ toTime }, getActiveSound) {
 // -----------------------------------------------------------------------------
 //  Watchers
 // -----------------------------------------------------------------------------
-function* watchPlayTrackInResults(getState) {
-  yield* takeLatest(PLAY_TRACK_IN_RESULTS, playTrackInResults, getState);
+function* watchPlayTrackInResults(getPlayer) {
+  yield* takeLatest(PLAY_TRACK_IN_RESULTS, playTrackInResults, getPlayer);
 }
 
-function* watchNextTrack(getState) {
-  yield* takeLatest(NEXT_TRACK, playNextTrack, getState);
+function* watchNextTrack(getPlayer) {
+  yield* takeLatest(NEXT_TRACK, playNextTrack, getPlayer);
 }
 
-function* watchPrevTrack(getState) {
-  yield* takeLatest(PREV_TRACK, playPrevTrack, getState);
+function* watchPrevTrack(getPlayer) {
+  yield* takeLatest(PREV_TRACK, playPrevTrack, getPlayer);
 }
 
-function* watchTogglePlayPause(getState) {
-  yield* takeLatest(TOGGLE_PLAY_PAUSE, togglePlayPause, getState)
+function* watchTogglePlayPause(getPlayer) {
+  yield* takeLatest(TOGGLE_PLAY_PAUSE, togglePlayPause, getPlayer)
 }
 
 function* watchSeek(getActiveSound) {
@@ -199,11 +196,12 @@ export default function* playerSagas(getState: Function): Generator {
     const { activeTrackId, sounds } = getState().player;
     return sounds[activeTrackId];
   }
+  const getPlayer = () => getState().player;
 
-  yield fork(watchPlayTrackInResults, getState);
-  yield fork(watchNextTrack, getState);
-  yield fork(watchPrevTrack, getState);
-  yield fork(watchTogglePlayPause, getState);
+  yield fork(watchPlayTrackInResults, getPlayer);
+  yield fork(watchNextTrack, getPlayer);
+  yield fork(watchPrevTrack, getPlayer);
+  yield fork(watchTogglePlayPause, getPlayer);
   yield fork(watchSeek, getActiveSound);
   yield fork(watchVolume, getActiveSound);
 }
