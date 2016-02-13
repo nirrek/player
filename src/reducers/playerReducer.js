@@ -1,6 +1,6 @@
 import { UPDATE_TIME, VOLUME, PLAY_START, PLAY_INITIATED,
   SOUNDSTREAM_REQUEST, SOUNDSTREAM_RESPONSE_SUCCESS, SOUNDSTREAM_RESPONSE_FAILURE,
-  TOGGLE_PLAY_PAUSE, SEEK, PLAY_TRACK_IN_RESULTS
+  TOGGLE_PLAY_PAUSE, SEEK, PLAY_TRACK_IN_RESULTS, REMOVE_TRACK_FROM_QUEUE,
 } from '../actions/player.js';
 
 const initialState = {
@@ -78,6 +78,15 @@ function playerReducer(state: Object = initialState, action: Object,
       return {
         ...state,
         elapsedTime: action.toTime,
+      };
+
+    case REMOVE_TRACK_FROM_QUEUE:
+      const tracks = [...state.tracks];
+      const idx = tracks.findIndex(t => t.id === action.trackId);
+      tracks.splice(idx, 1);
+      return {
+        ...state,
+        tracks,
       };
 
     default:

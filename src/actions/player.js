@@ -22,6 +22,7 @@ export const search = (): Object => ({
 // -----------------------------------------------------------------------------
 export const CLOSE_QUEUE = 'CLOSE_QUEUE';
 export const TOGGLE_QUEUE = 'TOGGLE_QUEUE';
+export const REMOVE_TRACK_FROM_QUEUE = 'REMOVE_TRACK_FROM_QUEUE';
 
 export const closeQueue = (): Object => ({
   type: CLOSE_QUEUE,
@@ -29,7 +30,12 @@ export const closeQueue = (): Object => ({
 
 export const toggleQueue = (): Object => ({
   type: TOGGLE_QUEUE,
-})
+});
+
+export const removeTrackFromQueue = (trackId: Number): Object => ({
+  type: REMOVE_TRACK_FROM_QUEUE,
+  trackId,
+});
 
 // -----------------------------------------------------------------------------
 // Play

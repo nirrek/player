@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dock from 'react-dock'; // TODO find this
 import { Scrollbars } from 'react-custom-scrollbars';
-import { closeQueue, playTrackInQueue } from '../actions/player.js';
+import {
+  closeQueue, playTrackInQueue, removeTrackFromQueue
+} from '../actions/player.js';
 import Button from '../components/Button.js';
 import ChevronRight from 'react-icons/lib/md/chevron-right';
 import Play from 'react-icons/lib/md/play-circle-outline';
@@ -30,6 +32,7 @@ class Track extends Component {
       title,
       isActiveTrack,
       playTrack,
+      removeTrack,
     } = this.props;
 
     let actionStyle = this.state.isHovered
@@ -49,6 +52,7 @@ class Track extends Component {
           <span className={trackStyles.title}>{title}</span>
           <div className={trackStyles.action}>
             <Close
+              onClick={() => removeTrack(id)}
               style={actionStyle}
               width={20} height={20} />
           </div>
@@ -99,7 +103,8 @@ const trackStyles = cssInJS({
 class Queue extends Component {
   render() {
     const {
-      isQueueOpen, closeQueue, playQueue, activeTrackId, playTrackInQueue
+      isQueueOpen, closeQueue, playQueue, activeTrackId, playTrackInQueue,
+      removeTrackFromQueue,
     } = this.props;
 
     return (
@@ -116,6 +121,7 @@ class Queue extends Component {
               <Track key={track.id}
                      isActiveTrack={track.id === activeTrackId}
                      playTrack={playTrackInQueue}
+                     removeTrack={removeTrackFromQueue}
                      {...track} />
             )}
           </div>
@@ -158,5 +164,6 @@ export default connect(
   {
     closeQueue,
     playTrackInQueue,
+    removeTrackFromQueue,
   }
 )(Queue);
