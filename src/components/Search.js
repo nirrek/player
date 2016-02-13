@@ -12,15 +12,15 @@ export default class Search extends Component {
   render() {
     const { query, onSearch, onChange } = this.props;
     return (
-      <div style={styles.form}>
+      <div className={styles.wrapper}>
         <Input placeholder="Search #tags or artists"
                autoFocus
                icon={
-                <SearchIcon width={37} height={37}
-                 style={{ marginRight: 5, color: 'rgba(255, 255, 255,1)' }} />
+                <SearchIcon className={styles.searchIcon}
+                            width={37} height={37} />
                }
-               inputStyle={styles.input}
-               containerStyle={styles.inputContainer}
+               inputStyle={dynamicStyles.input}
+               containerStyle={dynamicStyles.inputContainer}
                value={query}
                onChange={event => onChange(event.target.value)}
                onReturn={() => onSearch() } />
@@ -41,13 +41,8 @@ Search.defaultProps = {
   onChange: noop,
 };
 
-const styles = {
-  form: {
-    backgroundColor: '#0097FF',
-    boxShadow: '0 1px 3px rgba(118, 132, 142, .7)',
-    padding: '1em 1.5em',
-    boxShadow: '0 1px 3px rgba(0,0,0,.3)',
-  },
+// Can't use cssInJS for these.
+const dynamicStyles = {
   input: {
     padding: '.32em 0 .5em 0',
     fontSize: 25,
@@ -60,5 +55,18 @@ const styles = {
     borderLeft: 'none',
     borderRight: 'none',
     borderBottom: '1px solid rgba(255, 255, 255, .3)',
-  }
+  },
 };
+
+const styles = cssInJS({
+  wrapper: {
+    backgroundColor: '#0097FF',
+    boxShadow: '0 1px 3px rgba(118, 132, 142, .7)',
+    padding: '1em 1.5em',
+    boxShadow: '0 1px 3px rgba(0,0,0,.3)',
+  },
+  searchIcon: {
+    marginRight: 5,
+    color: 'rgba(255, 255, 255,1)',
+  },
+});

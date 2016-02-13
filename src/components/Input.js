@@ -1,49 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
+import cn from 'classnames';
+import { noop } from '../utils/utils.js';
 
-// m :: [StyleObject | Any ] -> StyleObject
-// Given a list of style objects, produces a single style object that is a
-// merger of all the passed style objects. Style objects are merged
-// left-to-right, so styles from later objects will override earlier styles.
-//
-// Importantly, any items in the list that are not of type object, will be
-// ignored. This supports the following use-case:
-//   `let s = m(predicate && style, possiblyUndefinedStyle)`
-const m = (objects) =>
-  objects.reduce((acc, obj) => {
-    if (typeof obj === 'object')
-      Object.entries(obj).forEach(([key, val]) => acc[key] = val);
-    return acc;
-  }, {});
-
-const RETURN_CHARCODE = 13;
 
 export default class Input extends Component {
   constructor(props) {
     super(props);
-    this.handleKeypress = this.handleKeypress.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
 
     this.state = {
       isFocused: false
     };
   }
 
-  componentWillMount() {
-    window.addEventListener('keypress', this.handleKeypress);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keypress', this.handleKeypress);
-  }
-
-  handleKeypress(e) {
-    if (e.charCode === RETURN_CHARCODE
-        && this.state.isFocused
-        && this.props.onReturn) {
+  handleKeyDown({ key }) {
+    if (key === 'Enter')
       this.props.onReturn(this.refs.input.value);
-    }
   }
 
   handleFocus() {
@@ -55,41 +29,23 @@ export default class Input extends Component {
   }
 
   render() {
-    const { icon, onReturn, inputStyle, containerStyle, ...rest } = this.props;
-
-    let iconDiv = icon && (
-      <div>
-        {icon}
-      </div>
-    );
-
-    let mergedInputStyle = {
-      backgroundColor: 'transparent',
-      width: '100%',
-      height: '100%',
-      border: 'none',
-      ...inputStyle,
-    };
-
-    const iconClass = classNames({
-      [styles.icon]: true,
-      [styles.iconFocused]: this.state.isFocused,
-    });
-
+    const { icon, inputStyle, containerStyle, ...rest } = this.props;
+    const { isFocused } = this.state;
     return (
       <div className={styles.container} style={containerStyle}>
-        <div className={iconClass}>
+        <div className={cn(styles.icon, { [styles.iconFocused]: isFocused })}>
           {icon}
         </div>
         <input
+          onKeyDown={this.handleKeyDown}
           autoComplete="off"
           autoCorrect="off"
           className={styles.input}
+          style={inputStyle}
           ref="input"
           type="text"
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
-          style={mergedInputStyle}
           {...rest} />
       </div>
     );
@@ -103,6 +59,10 @@ Input.propTypes = {
   containerStyle: PropTypes.object,
 };
 
+Input.defaultProps = {
+  onReturn: noop,
+}
+
 const styles = cssInJS({
   container: {
     display: 'flex',
@@ -110,6 +70,10 @@ const styles = cssInJS({
     alignItems: 'center',
   },
   input: {
+    backgroundColor: 'transparent',
+    width: '100%',
+    height: '100%',
+    border: 'none',
     '::-webkit-input-placeholder': {
       color: 'rgba(255, 255, 255,.7)',
     },

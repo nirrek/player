@@ -11,7 +11,13 @@ const toMinutesAndSeconds = (ms) => {
 }
 
 export default ({ time }) => (
-  <div style={{ fontSize: 12 }}>
+  <div className={styles.time}>
     {toMinutesAndSeconds(time)}
   </div>
 );
+
+const styles = cssInJS({
+  time: {
+    fontSize: 12
+  }
+});

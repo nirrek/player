@@ -16,20 +16,22 @@ export default class Controls extends Component {
       prev, next, togglePlayPause, seek, updateVolume
     } = this.props;
 
-    const elapsedPercent = activeTrack
-                            ? (elapsedTime / activeTrack.duration) * 100
-                            : 0;
+    const elapsedPercent =
+      activeTrack ? (elapsedTime / activeTrack.duration) * 100
+                  : 0;
 
     const seeker = activeTrack ? (
-      <Slider min={0} max={activeTrack.duration} value={elapsedTime}
-              onSlideEnd={seek}/>
+      <Slider min={0}
+              max={activeTrack.duration}
+              value={elapsedTime}
+              onSlideEnd={seek} />
     ) : (
       <Slider />
     );
 
     return (
-      <div style={styles.controls}>
-        <div style={styles.leftColumn}>
+      <div className={styles.controls}>
+        <div className={styles.leftColumn}>
           <Button disabled={!isPrevTrack} onClick={prev}>
             <Previous width={25} height={25}/>
           </Button>
@@ -42,32 +44,30 @@ export default class Controls extends Component {
             <Next width={25} height={25} />
           </Button>
         </div>
-        <div style={styles.centerColumn}>
+        <div className={styles.centerColumn}>
           {activeTrack && (
-            <div style={{ display: 'flex', position: 'relative', alignItems: 'center' }}>
-              <span style={styles.trackTitle}>
+            <div className={styles.seekbar}>
+              <span className={styles.trackTitle}>
                 {activeTrack.title}
               </span>
 
-              <div style={{ paddingRight: '.6em' }}>
+              <div className={styles.elapsedTime}>
                 <Time time={elapsedTime || 0} />
               </div>
-              <div style={{ flexGrow: 1 }}>
+              <div className={styles.seekerContainer}>
                 {seeker}
               </div>
-              <div style={{ paddingLeft: '.6em' }}>
+              <div className={styles.duration}>
                 <Time time={activeTrack.duration} />
               </div>
             </div>
           )}
         </div>
-        <div style={styles.rightColumn}>
-          <Playlist width={25} height={25} style={{ marginRight: 15 }} />
-          <div style={{ display: 'flex', width: 100 }}>
-            <Volume width={18} height={18}
-              style={{ position: 'relative', top: 1, marginRight: 3 }} />
-            <Slider value={volume} min={0} max={1}
-              onSlide={updateVolume} />
+        <div className={styles.rightColumn}>
+          <Playlist className={styles.playlist} width={25} height={25} />
+          <div className={styles.volumeContainer}>
+            <Volume className={styles.volume} width={18} height={18} />
+            <Slider value={volume} min={0} max={1} onSlide={updateVolume} />
           </div>
         </div>
       </div>
@@ -75,10 +75,10 @@ export default class Controls extends Component {
   }
 }
 
-const styles = {
+const styles = cssInJS({
   controls: {
     display: 'flex',
-    height: '100%'
+    height: '100%',
   },
   trackTitle: {
     position: 'absolute',
@@ -89,7 +89,7 @@ const styles = {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     fontSize: 11,
-    lineHeight: 1
+    lineHeight: 1,
   },
   leftColumn: {
     display: 'flex',
@@ -100,12 +100,38 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   rightColumn: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '0 20px'
-  }
-};
+    padding: '0 20px',
+  },
+  playlist: {
+    marginRight: 15,
+  },
+  volumeContainer: {
+    display: 'flex',
+    width: 100,
+  },
+  volume: {
+    position: 'relative',
+    top: 1,
+    marginRight: 3,
+  },
+  seekbar: {
+    display: 'flex',
+    position: 'relative',
+    alignItems: 'center',
+  },
+  elapsedTime: {
+    paddingRight: '.6em',
+  },
+  seekerContainer: {
+    flexGrow: 1,
+  },
+  duration: {
+    paddingLeft: '.6em',
+  },
+});

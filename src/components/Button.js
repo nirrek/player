@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Hoverable from './Hoverable.js';
+import { noop } from '../utils/utils.js';
+import cn from 'classnames';
 
 export default class Button extends Component {
   constructor(props) {
@@ -24,26 +26,27 @@ export default class Button extends Component {
   }
 
   render() {
-    const { children, disabled, style, ...rest } = this.props;
-    const { isHovered } = this.state;
-    const localStyle = {
-      opacity: disabled ? 0.2 : 'inherit',
-      cursor: isHovered && !disabled ? 'pointer' : 'default',
-    }
-
+    const { children, disabled, ...rest } = this.props;
     return (
-      <Hoverable onHoverChange={this.handleHoverChange}>
-        <div style={{...style, ...localStyle}}
-             {...rest}
-             onClick={this.handleClick} // must take precedence over rest.
-        >
-          {children}
-        </div>
-      </Hoverable>
+      <div className={cn(styles.default, { [styles.disabled]: disabled })}
+           {...rest}
+           onClick={this.handleClick} /* must take precedence over rest */>
+        {children}
+      </div>
     );
   }
 }
 
 Button.defaultProps = {
-  onClick: () => {}
+  onClick: noop,
 };
+
+const styles = cssInJS({
+  default: {
+    ':hover': { cursor: 'pointer' }
+  },
+  disabled: {
+    opacity: 0.2,
+    ':hover': { cursor: 'default' }
+  },
+});

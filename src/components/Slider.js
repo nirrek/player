@@ -97,16 +97,14 @@ export default class Slider extends Component {
     const activeStyle = (isHovered || doTrack) ? { visibility: 'visible' } : {};
 
     return (
-      <div onMouseOver={this.handleMouseOver}
+      <div className={styles.hoverArea}
+           onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}
            onMouseDown={this.handleMouseDown}
-           ref="hoverArea"
-           style={styles.hoverArea}>
-        <div className="barContainer" ref="barContainer"
-             style={styles.barContainer}>
-          <div style={{...styles.bar, ...widthStyle}}>
-            <div style={{...styles.handle, ...activeStyle}}>
-            </div>
+           ref="hoverArea">
+        <div className={styles.barContainer}>
+          <div className={styles.bar} style={widthStyle}>
+            <div className={styles.handle} style={activeStyle} />
           </div>
         </div>
       </div>
@@ -131,7 +129,7 @@ Slider.defaultProps = {
 };
 
 // can't do hover without Radium
-const styles = {
+const styles = cssInJS({
   hoverArea: {
     height: 20,
     width: '100%',
@@ -160,4 +158,4 @@ const styles = {
     top: -4,
     visibility: 'hidden',
   }
-};
+});

@@ -7,9 +7,9 @@ import Heart from 'react-icons/lib/md/favorite';
 // the artwork from. If no artwork URL is given, produces the empty string.
 const largeArtworkUrl = (artworkUrl) => {
   if (!artworkUrl) return '';
-  const suffixLength = 9; // suffix is 'large.jpg'
+  const suffixLength = 'large.jpg'.length;
   const base = artworkUrl.slice(0, -suffixLength);
-  return base + 't300x300.jpg';
+  return `${base}t300x300.jpg`;
 }
 
 // numberAbbreviation :: Number -> String
@@ -87,33 +87,24 @@ class ResultItem extends Component {
     const numTagsToShow = 5;
     tagList.length = numTagsToShow;
 
-    const style = {
-      display: 'flex',
-      flexShrink: 0,
-      padding: '10px 16px',
-      borderBottom: '1px solid rgba(100,100,100,.1)',
-      alignItems: 'center',
-    };
-
     return isActive ? (
-      <div style={{ background: '#0097FF', padding: '1em', color: '#fff' }}>
-        <div style={{ display: 'flex' }}>
-          <img style={{ borderRadius: 75 }}
-            width="150" height="150" src={largeArtworkUrl(artwork_url)} />
-          <div style={{ marginLeft: '2em', display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
-            <h3 style={{ margin: 0, textShadow: '0 1px 1px rgba(0,0,0,.1)'}}>{title}</h3>
-            <h4 style={{ margin: 0, opacity: 0.9, fontSize: 14 }}>{user.username}</h4>
-            <div style={{ marginTop: '1em', color: '#005592', fontSize: 14, fontWeight: 'bold' }}>
-              <div style={{ display: 'flex', alignItems: 'center', marginLeft: -5 }}>
-                <Play width={22} height={22} /> {numberAbbreviation(playback_count)}
-                 <Heart width={18} height={18} style={{ margin: '0 3px 0 16px' }} /> {numberAbbreviation(likes_count)}
+      <div className={styles.itemActive}>
+        <div className={styles.itemActiveInsulator}>
+          <img className={styles.artworkLarge}
+             src={largeArtworkUrl(artwork_url)} />
+          <div className={styles.details}>
+            <h3 className={styles.titleActive}>{title}</h3>
+            <h4 className={styles.artist}>{user.username}</h4>
+            <div className={styles.metaContainer}>
+              <div className={styles.countsContainer}>
+                <Play width={22} height={22} />
+                {numberAbbreviation(playback_count)}
+                <Heart className={styles.likesCount} width={18} height={18} />
+                {numberAbbreviation(likes_count)}
               </div>
-
-              <div style={{ marginTop: 5 }}>
+              <div className={styles.tagContainer}>
                 {tagList.map(tag =>
-                  <span key={tag} style={{
-                    marginRight: 8, display: 'inline-block', padding: '3px 9px', backgroundColor: '#005592', color: '#1EA1FF', borderRadius: 20, fontSize: 13
-                  }}>
+                  <span key={tag} className={styles.tag}>
                     #{tag}
                   </span>
                 )}
@@ -121,18 +112,88 @@ class ResultItem extends Component {
             </div>
           </div>
         </div>
-        {/*
-        <img src={dataUrl} style={{ marginTop: '1em' }} />
-        */}
       </div>
     ) : (
-      <div style={{...style }} onClick={() => handlePlay(id)}>
-        <img style={{ width: 40, height: 40, borderRadius: 20 }}
+      <div className={styles.item} onClick={() => handlePlay(id)}>
+        <img className={styles.artworkSmall}
            src={largeArtworkUrl(artwork_url)} />
-         <span style={{ fontSize: 14, margin: '0 1em' }}>{title}</span>
+         <span className={styles.title}>{title}</span>
       </div>
     )
   }
 }
+
+const styles = cssInJS({
+  item: {
+    display: 'flex',
+    flexShrink: 0,
+    padding: '10px 16px',
+    borderBottom: '1px solid rgba(100,100,100,.1)',
+    alignItems: 'center',
+  },
+  artworkSmall: {
+    width: 40,
+    height: 40,
+    borderRadius: 40 / 2,
+  },
+  title: {
+    fontSize: 14,
+    margin: '0 1em',
+  },
+  itemActive: {
+    background: '#0097FF',
+    padding: '1em',
+    color: '#fff',
+  },
+  itemActiveInsulator: {
+    display: 'flex',
+  },
+  artworkLarge: {
+    width: 150,
+    height: 150,
+    borderRadius: 150 / 2,
+  },
+  details: {
+    marginLeft: '2em',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  titleActive: {
+    margin: 0,
+    textShadow: '0 1px 1px rgba(0,0,0,.1)',
+  },
+  artist: {
+    margin: 0,
+    opacity: 0.9,
+    fontSize: 14,
+  },
+  metaContainer: {
+    marginTop: '1em',
+    color: '#005592',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  countsContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: -5,
+  },
+  likesCount: {
+    margin: '0 3px 0 16px',
+  },
+  tagContainer: {
+    marginTop: 5,
+  },
+  tag: {
+    marginRight: 8,
+    display: 'inline-block',
+    padding: '3px 9px',
+    backgroundColor: '#005592',
+    color: '#1EA1FF',
+    borderRadius: 20,
+    fontSize: 13,
+  }
+});
 
 export default ResultItem;
