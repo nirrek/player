@@ -29,7 +29,7 @@ class Track extends Component {
       id,
       title,
       isActiveTrack,
-      onClick,
+      playTrack,
     } = this.props;
 
     let actionStyle = this.state.isHovered
@@ -37,21 +37,21 @@ class Track extends Component {
       : { visibility: 'hidden' };
 
     return (
-      <Hoverable onHoverChange={this.handleHoverChange}>
-        <div
-          className={cn(trackStyles.row, { [trackStyles.rowActive]: isActiveTrack })}>
-          <span className={trackStyles.actionCapsule}>
+      <Hoverable onHoverChange={this.handleHoverChange}
+        className={cn(trackStyles.row, { [trackStyles.rowActive]: isActiveTrack })}>
+        <div className={trackStyles.flex}>
+          <div className={trackStyles.action}>
             <Play
-              onClick={() => onClick(id)}
+              onClick={() => playTrack(id)}
               style={actionStyle}
               width={20} height={20} />
-          </span>
+          </div>
           <span className={trackStyles.title}>{title}</span>
-          <span className={trackStyles.actionCapsule}>
+          <div className={trackStyles.action}>
             <Close
               style={actionStyle}
               width={20} height={20} />
-          </span>
+          </div>
         </div>
       </Hoverable>
     )
@@ -62,11 +62,7 @@ class Track extends Component {
 const trackStyles = cssInJS({
   row: {
     fontSize: 14,
-    display: 'block',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    padding: '1em',
+    padding: '1em 10px',
     borderBottom: '1px solid #eee',
     ':first-of-type': {
       borderTop: '1px solid #eee',
@@ -78,10 +74,23 @@ const trackStyles = cssInJS({
   rowActive: {
     color: '#0097FF',
   },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   title: {
     userSelect: 'none',
+    flexGrow: 1,
+    margin: '0 5px',
+    display: 'block',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
-  actionCapsule: {
+  action: {
+    position: 'relative',
+    top: -1,
     ':hover': { cursor: 'pointer' }
   }
 });
@@ -106,7 +115,7 @@ class Queue extends Component {
             {playQueue.map(track =>
               <Track key={track.id}
                      isActiveTrack={track.id === activeTrackId}
-                     onClick={playTrackInQueue}
+                     playTrack={playTrackInQueue}
                      {...track} />
             )}
           </div>
@@ -123,12 +132,12 @@ const styles = cssInJS({
     alignItems: 'center',
   },
   heading: {
-    padding: '0 1em',
+    paddingLeft: 35,
     fontWeight: 200,
     color: '#333',
   },
   chevron: {
-    marginRight: 16,
+    marginRight: 28,
   },
   playQueue: {
   },
