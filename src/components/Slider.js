@@ -28,6 +28,11 @@ export default class Slider extends Component {
     window.addEventListener('mouseup', this.handleMouseUp);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+  }
+
   handleMouseDown(event) {
     const value = this.calcValue(event);
     this.setState({
@@ -132,6 +137,7 @@ const styles = {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
+    cursor: 'pointer',
   },
   barContainer: {
     height: 2,
