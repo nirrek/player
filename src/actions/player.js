@@ -18,6 +18,20 @@ export const search = (): Object => ({
 });
 
 // -----------------------------------------------------------------------------
+// Queue
+// -----------------------------------------------------------------------------
+export const CLOSE_QUEUE = 'CLOSE_QUEUE';
+export const TOGGLE_QUEUE = 'TOGGLE_QUEUE';
+
+export const closeQueue = (): Object => ({
+  type: CLOSE_QUEUE,
+});
+
+export const toggleQueue = (): Object => ({
+  type: TOGGLE_QUEUE,
+})
+
+// -----------------------------------------------------------------------------
 // Play
 // -----------------------------------------------------------------------------
 
@@ -39,6 +53,11 @@ export const playList = (startTrackId: number): Object => ({
   type: PLAY_TRACK_IN_RESULTS,
   trackId: startTrackId,
 })
+
+export const playTrackInQueue = (startTrackId: number): Object => ({
+  type: PLAY_TRACK_IN_QUEUE,
+  trackId: startTrackId,
+});
 
 export const togglePlayPause = (): Object => ({
   type: TOGGLE_PLAY_PAUSE

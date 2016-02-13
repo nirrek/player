@@ -7,6 +7,7 @@ import {
 import Search from '../components/Search.js';
 import ControlsContainer from './ControlsContainer.js';
 import ResultsListContainer from '../containers/ResultsListContainer.js';
+import QueueContainer from '../containers/QueueContainer.js';
 
 export default class Player extends Component {
   render() {
@@ -29,6 +30,7 @@ export default class Player extends Component {
           backgroundColor: '#efefef', flexShrink: 1 }}>
           <ControlsContainer />
         </div>
+        <QueueContainer />
       </div>
     );
   }

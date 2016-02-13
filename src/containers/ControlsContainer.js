@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Controls from '../components/Controls.js';
 import {
-  prev, next, togglePlayPause, seek, volume
+  prev, next, togglePlayPause, seek, volume, toggleQueue
 } from '../actions/player.js';
 
 const hasNextTrack = (tracks, trackId) => {
@@ -34,5 +34,6 @@ export default connect(
     togglePlayPause,
     seek,
     updateVolume: volume, // avoid name clash with volume data prop
+    toggleQueue,
   }
 )(Controls);

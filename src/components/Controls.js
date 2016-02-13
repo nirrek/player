@@ -13,7 +13,7 @@ export default class Controls extends Component {
   render() {
     const {
       activeTrack, isNextTrack, isPrevTrack, isPlaying, elapsedTime, volume,
-      prev, next, togglePlayPause, seek, updateVolume
+      prev, next, togglePlayPause, seek, updateVolume, toggleQueue
     } = this.props;
 
     const elapsedPercent =
@@ -64,7 +64,8 @@ export default class Controls extends Component {
           )}
         </div>
         <div className={styles.rightColumn}>
-          <Playlist className={styles.playlist} width={25} height={25} />
+          <Playlist className={styles.playlist} width={25} height={25}
+                    onClick={toggleQueue} />
           <div className={styles.volumeContainer}>
             <Volume className={styles.volume} width={18} height={18} />
             <Slider value={volume} min={0} max={1} onSlide={updateVolume} />

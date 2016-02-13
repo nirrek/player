@@ -135,6 +135,10 @@ function* playTrackInResults({ trackId }, getPlayer) {
   yield fork(playTrackTask, getPlayer, trackId);
 }
 
+function* playTrackInQueue({ trackId }, getPlayer) {
+  yield fork(playTrackTask, getPlayer, trackId);
+}
+
 function* togglePlayPause(action, getPlayer) {
   const { isPlaying, sounds, activeTrackId } = getPlayer();
   const sound = sounds[activeTrackId];
@@ -171,6 +175,10 @@ function* watchPlayTrackInResults(getPlayer) {
   yield* takeLatest(PLAY_TRACK_IN_RESULTS, playTrackInResults, getPlayer);
 }
 
+function* watchPlayTrackInQueue(getPlayer) {
+  yield* takeLatest(PLAY_TRACK_IN_QUEUE, playTrackInQueue, getPlayer);
+}
+
 function* watchNextTrack(getPlayer) {
   yield* takeLatest(NEXT_TRACK, playNextTrack, getPlayer);
 }
@@ -199,6 +207,7 @@ export default function* playerSagas(getState: Function): Generator {
   const getPlayer = () => getState().player;
 
   yield fork(watchPlayTrackInResults, getPlayer);
+  yield fork(watchPlayTrackInQueue, getPlayer);
   yield fork(watchNextTrack, getPlayer);
   yield fork(watchPrevTrack, getPlayer);
   yield fork(watchTogglePlayPause, getPlayer);
