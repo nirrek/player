@@ -1,24 +1,45 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Spinner from 'react-spinkit';
+import cn from 'classnames';
 import { playList } from '../actions/player.js';
 import ResultsItem from '../components/ResultsItem.js';
 
 class ResultsList extends Component {
   render() {
-    const { results, isFetching, error, activeTrackId, playList } = this.props;
+    const {
+      results, query, isFetching, hasFetched, error, activeTrackId, playList,
+    } = this.props;
+
+    let notification;
+    if (error) {
+      notification = { type: 'error', content: `Error: ${error}` };
+    }
+    else if (isFetching) {
+      notification = {
+        type: 'isFetching',
+        content: (
+          <div className={styles.notificationInner}>
+            <Spinner spinnerName="double-bounce" noFadeIn />
+            <span className={styles.loadingText}>Fetching results...</span>
+          </div>
+        ),
+      }
+    }
+    else if (hasFetched && !isFetching && !results.length) {
+      notification = { type: 'noResults', content: 'No results found.' };
+    }
 
     return (
       <div className={styles.resultsList}>
-        {isFetching &&
-          <div className={styles.loadingOuter} style={{  }}>
-            <div className={styles.loadingInner}>
-              <Spinner spinnerName="double-bounce" noFadeIn />
-              <span className={styles.loadingText}>Fetching results...</span>
-            </div>
+        {notification &&
+          <div className={cn(
+              styles.notificationOuter,
+              { [styles.error]: notification.type === 'error' }
+            )}>
+            {notification.content}
           </div>
         }
-        {error && <div>Error: {error}</div>}
 
         {results.map(track =>
           <ResultsItem
@@ -42,14 +63,14 @@ const styles = cssInJS({
     width: '100%',
     height: '100%',
   },
-  loadingOuter: {
+  notificationOuter: {
     display: 'flex',
     width: '100%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loadingInner: {
+  notificationInner: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -58,12 +79,17 @@ const styles = cssInJS({
     color: '#869EAF',
     marginTop: 5 ,
   },
+  notification: {
+
+  }
 });
 
 export default connect(
   (state) => ({
     results: state.search.results,
+    query: state.search.query,
     isFetching: state.search.isFetching,
+    hasFetched: state.search.hasFetched,
     error: state.search.error,
     activeTrackId: state.player.activeTrackId,
   }),
