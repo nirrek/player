@@ -14,13 +14,13 @@ export default class Queue extends Component {
 
     return (
       <Dock isVisible={isQueueOpen} position={'right'} size={400} fluid={false}>
+        <div className={styles.headingContainer}>
+          <h2 className={styles.heading}>Songs Up Next</h2>
+          <Button onClick={closeQueue}>
+            <ChevronRight className={styles.chevron} width={25} height={25} />
+          </Button>
+        </div>
         <Scrollbars>
-          <div className={styles.headingContainer}>
-            <h2 className={styles.heading}>Songs Up Next</h2>
-            <Button onClick={closeQueue}>
-              <ChevronRight className={styles.chevron} width={25} height={25} />
-            </Button>
-          </div>
           <div className={styles.playQueue}>
             {playQueue.map(track =>
               <QueueTrack key={track.id}
@@ -41,6 +41,7 @@ const styles = cssInJS({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderBottom: '1px solid #eee',
   },
   heading: {
     paddingLeft: 35,

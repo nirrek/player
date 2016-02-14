@@ -50,9 +50,6 @@ const trackStyles = cssInJS({
     fontSize: 14,
     padding: '1em 10px',
     borderBottom: '1px solid #eee',
-    ':first-of-type': {
-      borderTop: '1px solid #eee',
-    },
     ':hover': {
       cursor: 'default',
     }
