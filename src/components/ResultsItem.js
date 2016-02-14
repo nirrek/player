@@ -139,6 +139,10 @@ const styles = cssInJS({
     padding: '10px 16px',
     borderBottom: '1px solid rgba(100,100,100,.1)',
     alignItems: 'center',
+    ':hover': {
+      cursor: 'pointer',
+      backgroundColor: '#fafafa',
+    }
   },
   artworkSmall: {
     width: 40,
