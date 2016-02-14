@@ -9,12 +9,12 @@ class ResultsList extends Component {
     const { results, isFetching, error, activeTrackId, playList } = this.props;
 
     return (
-      <div style={{ padding: '7px 0', width: '100%', height: '100%' }}>
+      <div className={styles.resultsList}>
         {isFetching &&
-          <div style={{ display: 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className={styles.loadingOuter} style={{  }}>
+            <div className={styles.loadingInner}>
               <Spinner spinnerName="double-bounce" noFadeIn />
-              <span style={{ color: '#869EAF', marginTop: 5 }}>Fetching results...</span>
+              <span className={styles.loadingText}>Fetching results...</span>
             </div>
           </div>
         }
@@ -35,6 +35,30 @@ class ResultsList extends Component {
 ResultsList.contextTypes = {
   store: PropTypes.object
 };
+
+const styles = cssInJS({
+  resultsList: {
+    padding: '7px 0',
+    width: '100%',
+    height: '100%',
+  },
+  loadingOuter: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingInner: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#869EAF',
+    marginTop: 5 ,
+  },
+});
 
 export default connect(
   (state) => ({
