@@ -18,3 +18,7 @@ div .double-bounce1, div .double-bounce2 {
   background-color: #0097FF;
 }
 
+::selection {
+  color: white;
+  background: #0097FF;
+}
