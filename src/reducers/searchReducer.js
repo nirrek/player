@@ -6,6 +6,7 @@ import {
 const initialState = {
   query: '',
   isFetching: false,
+  hasFetched: false,
   error: '',
   results: [],
 };
@@ -22,6 +23,7 @@ function searchReducer(state: Object = initialState, action: Object): Object {
       return {
         ...state,
         isFetching: true,
+        hasFetched: true,
         error: '',
         results: [],
       };
