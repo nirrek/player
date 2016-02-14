@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Play from 'react-icons/lib/md/play-arrow';
 import Heart from 'react-icons/lib/md/favorite';
+import Album from 'react-icons/lib/md/album';
 
 // largeArtworkUrl :: String -> String
 // Given an artwork URL produces a new URL for fetching the large variant of
@@ -90,8 +91,12 @@ class ResultItem extends Component {
     return isActive ? (
       <div className={styles.itemActive}>
         <div className={styles.itemActiveInsulator}>
-          <img className={styles.artworkLarge}
-             src={largeArtworkUrl(artwork_url)} />
+          {artwork_url ? (
+            <img className={styles.artworkLarge}
+                 src={largeArtworkUrl(artwork_url)} />
+          ) : (
+            <Album width={150} height={150} />
+          )}
           <div className={styles.details}>
             <h3 className={styles.titleActive}>{title}</h3>
             <h4 className={styles.artist}>{user.username}</h4>
@@ -115,9 +120,13 @@ class ResultItem extends Component {
       </div>
     ) : (
       <div className={styles.item} onClick={() => handlePlay(id)}>
-        <img className={styles.artworkSmall}
-           src={largeArtworkUrl(artwork_url)} />
-         <span className={styles.title}>{title}</span>
+        {artwork_url ? (
+          <img className={styles.artworkSmall}
+               src={largeArtworkUrl(artwork_url)} />
+        ) : (
+          <Album width={40} height={40} />
+        )}
+        <span className={styles.title}>{title}</span>
       </div>
     )
   }
