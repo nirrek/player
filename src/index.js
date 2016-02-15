@@ -6,8 +6,8 @@ import configureStore from './store/configureStore.js';
 import { Provider } from 'react-redux';
 import App from './components/App.js';
 
-require('./main.css');
-require('../dist/bundle.css');
+require('./styles/main.css');
+require('./styles/bundle.css');
 
 Soundcloud.initialize({
   client_id: 'ba20838472e3ce0703c257f22404c8ea'
