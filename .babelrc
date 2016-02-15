@@ -5,7 +5,8 @@
       "presets": ["react-hmre"],
       "plugins": [
         ["css-in-js", {
-          "bundleFile": "dist/bundle.css"
+          "bundleFile": "src/styles/bundle.css",
+          "vendorPrefixes": true
         }]
       ]
     },
@@ -15,7 +16,7 @@
           "vendorPrefixes": true,
           "minify": true,
           "compressClassNames": true,
-          "bundleFile": "dist/bundle.css"
+          "bundleFile": "src/styles/bundle.css"
         }]
       ]
     }
