@@ -1,7 +1,7 @@
 # Player [WIP]
 Soundcloud player built with [React](https://github.com/facebook/react), [Redux](https://github.com/reactjs/redux), and [redux-saga](https://github.com/yelouafi/redux-saga) using ES2015.
 
-[Live demo →](player.surge.sh)
+[Live demo →](http://player.surge.sh)
 
 ### Setup
 ```bash
