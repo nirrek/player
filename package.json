@@ -3,8 +3,8 @@
     "clean": "rimraf dist",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build:cssinjs": "NODE_ENV=production babel ./src > /dev/null",
-    "build:html": "cp ./index.html ./dist",
-    "build": "npm run clean && npm run build:cssinjs && npm run build:webpack && npm run build:html",
+    "build:copy": "cp ./index.html ./favicon.ico ./dist",
+    "build": "npm run clean && npm run build:cssinjs && npm run build:webpack && npm run build:copy",
     "deploy": "surge ./dist player.surge.sh",
     "start": "node devServer.js",
     "lint": "eslint src"
